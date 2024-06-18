@@ -2131,13 +2131,30 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'ClientsList',
   props: ['clients'],
+  data: function data() {
+    return {
+      message: ''
+    };
+  },
   methods: {
     deleteClient: function deleteClient(client) {
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a["delete"]("/clients/".concat(client.id));
+      var _this = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a["delete"]("/clients/".concat(client.id)).then(function (response) {
+        return _this.message = response.data.message;
+      });
+      window.location.reload();
     }
   }
 });
@@ -38237,6 +38254,12 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", [
     _vm._m(0),
+    _vm._v(" "),
+    _vm.message.length
+      ? _c("div", { staticClass: "alert alert-success" }, [
+          _vm._v("\n        " + _vm._s(_vm.message) + "\n    ")
+        ])
+      : _vm._e(),
     _vm._v(" "),
     _c("table", { staticClass: "table" }, [
       _vm._m(1),

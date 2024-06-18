@@ -5,6 +5,13 @@
             <a href="/clients/create" class="float-right btn btn-primary">+ New Client</a>
         </h1>
 
+        <div
+            v-if="message.length"
+            class="alert alert-success"
+        >
+            {{ message }}
+        </div>
+
         <table class="table">
             <thead>
                 <tr>
@@ -39,9 +46,16 @@ export default {
 
     props: ['clients'],
 
+    data() {
+        return {
+            message: '',
+        }
+    },
+
     methods: {
         deleteClient(client) {
-            axios.delete(`/clients/${client.id}`);
+            axios.delete(`/clients/${client.id}`).then((response) => this.message = response.data.message);
+            window.location.reload();
         }
     }
 }
