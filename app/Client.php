@@ -22,7 +22,7 @@ class Client extends Model
 
     public function bookings()
     {
-        return $this->hasMany(Booking::class);
+        return $this->hasMany(Booking::class)->orderBy('start');
     }
 
     public function user(): BelongsTo
