@@ -38148,7 +38148,7 @@ var render = function() {
                               _c("td", [
                                 _vm._v(
                                   _vm._s(booking.start) +
-                                    " - " +
+                                    " to " +
                                     _vm._s(booking.end)
                                 )
                               ]),
