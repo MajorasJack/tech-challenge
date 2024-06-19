@@ -6,6 +6,8 @@ use App\Client;
 use App\Http\Requests\ClientRequest;
 use App\Http\Requests\ClientShowRequest;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Builder;
+
 
 class ClientsController extends Controller
 {
@@ -25,32 +27,14 @@ class ClientsController extends Controller
         return view('clients.create');
     }
 
-    public function show(Client $client, ClientShowRequest $request)
+    public function show(Client $client)
     {
-        $client = $client->with(['bookings' => function (HasMany $query) use ($request) {
-            match ($request->get('filter')) {
-                'past' => $query->where('start', '<', now()),
-                'future' => $query->where('start', '>', now()),
-                default => $query,
-            };
-        }])
-            ->first();
-
         return view('clients.show', ['client' => $client]);
     }
 
     public function store(ClientRequest $request)
     {
-        $client = new Client;
-        $client->name = $request->get('name');
-        $client->email = $request->get('email');
-        $client->phone = $request->get('phone');
-        $client->address = $request->get('address');
-        $client->city = $request->get('city');
-        $client->postcode = $request->get('postcode');
-        $client->save();
-
-        return $client;
+        return Client::create($request->validated());
     }
 
     public function destroy(Client $client)

@@ -2127,6 +2127,8 @@ __webpack_require__.r(__webpack_exports__);
       currentTab: 'bookings',
       journals: [],
       journalsLoaded: false,
+      bookings: [],
+      bookingsLoaded: false,
       message: ''
     };
   },
@@ -2136,7 +2138,11 @@ __webpack_require__.r(__webpack_exports__);
     axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/clients/".concat(this.client.id, "/journals")).then(function (response) {
       return _this.journals = response.data;
     });
+    axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/clients/".concat(this.client.id, "/bookings")).then(function (response) {
+      return _this.bookings = response.data;
+    });
     this.journalsLoaded = true;
+    this.bookingsLoaded = true;
   },
   methods: {
     switchTab: function switchTab(newTab) {
@@ -2154,7 +2160,11 @@ __webpack_require__.r(__webpack_exports__);
       window.location.reload();
     },
     filterBookings: function filterBookings(filter) {
-      window.location = "/clients/".concat(this.client.id, "?filter=").concat(filter);
+      var _this3 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/clients/".concat(this.client.id, "/bookings?filter=").concat(filter)).then(function (response) {
+        return _this3.bookings = response.data;
+      });
     }
   }
 });
@@ -38363,14 +38373,14 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _vm.client.bookings && _vm.client.bookings.length > 0
+                _vm.bookings && _vm.bookings.length > 0 && _vm.bookingsLoaded
                   ? [
                       _c("table", [
                         _vm._m(0),
                         _vm._v(" "),
                         _c(
                           "tbody",
-                          _vm._l(_vm.client.bookings, function(booking) {
+                          _vm._l(_vm.bookings, function(booking) {
                             return _c("tr", { key: booking.id }, [
                               _c("td", [
                                 _vm._v(

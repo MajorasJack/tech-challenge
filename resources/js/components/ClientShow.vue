@@ -68,7 +68,7 @@
                         </div>
                     </div>
 
-                    <template v-if="client.bookings && client.bookings.length > 0">
+                    <template v-if="bookings && bookings.length > 0 && bookingsLoaded">
                         <table>
                             <thead>
                                 <tr>
@@ -78,7 +78,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="booking in client.bookings" :key="booking.id">
+                                <tr v-for="booking in bookings" :key="booking.id">
                                     <td>{{ booking.start }} to {{ booking.end }}</td>
                                     <td>{{ booking.notes }}</td>
                                     <td>
@@ -142,13 +142,18 @@ export default {
             currentTab: 'bookings',
             journals: [],
             journalsLoaded: false,
+            bookings: [],
+            bookingsLoaded: false,
             message: '',
         }
     },
 
     mounted() {
         axios.get(`/clients/${this.client.id}/journals`).then((response) => this.journals = response.data)
+        axios.get(`/clients/${this.client.id}/bookings`).then((response) => this.bookings = response.data)
+
         this.journalsLoaded = true;
+        this.bookingsLoaded = true;
     },
 
     methods: {
@@ -167,7 +172,8 @@ export default {
         },
 
         filterBookings(filter) {
-            window.location = `/clients/${this.client.id}?filter=${filter}`;
+            axios.get(`/clients/${this.client.id}/bookings?filter=${filter}`)
+                .then((response) => this.bookings = response.data)
         }
     }
 }

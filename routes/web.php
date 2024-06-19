@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BookingsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,6 +28,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'clients'], function () {
     Route::post('/', 'ClientsController@store')->name('clients.store');
     Route::get('/{client}', 'ClientsController@show')->name('clients.show');
     Route::delete('/{client}', 'ClientsController@destroy')->name('clients.destroy');
+
+    Route::get('/{client}/bookings', 'BookingsController')->name('client.bookings');
 
     Route::get('/{client}/journals', 'JournalsController@index')->name('journals.index');
     Route::get('/{client}/journals/create', 'JournalsController@create');
