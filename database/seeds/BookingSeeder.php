@@ -16,7 +16,7 @@ class BookingSeeder extends Seeder
         $clients = Client::all();
 
         foreach ($clients as $client) {
-            $numberOfBookings = rand(0, 30);
+            $numberOfBookings = 10;
 
             factory(Booking::class, $numberOfBookings)->create([
                 'client_id' => $client->id,
