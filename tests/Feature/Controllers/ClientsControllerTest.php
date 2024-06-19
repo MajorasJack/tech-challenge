@@ -66,4 +66,36 @@ class ClientsControllerTest extends TestCase
             ->assertValid()
             ->assertSessionHasNoErrors();
     }
+
+    public function testThatItWillDisplayTheClientBookingsInTheCorrectOrder()
+    {
+        $client = factory(Client::class)->create();
+
+        $oldBooking = factory(Booking::class)->create([
+            'client_id' => $client->id,
+            'start' => now()->subDays($this->faker->numberBetween(1, 100)),
+        ]);
+
+        $currentBooking = factory(Booking::class)->create([
+            'client_id' => $client->id,
+            'start' => now(),
+        ]);
+
+        $futureBooking = factory(Booking::class)->create([
+            'client_id' => $client->id,
+            'start' => now()->addDays($this->faker->numberBetween(1, 100)),
+        ]);
+
+        $this->actingAs(factory(User::class)->create())
+            ->get(route('clients.show', $client))
+            ->assertOk()
+            ->assertSeeInOrder([
+                $oldBooking->start->format('l d F o, G:i'),
+                $oldBooking->end->format('l d F o, G:i'),
+                $currentBooking->start->format('l d F o, G:i'),
+                $currentBooking->end->format('l d F o, G:i'),
+                $futureBooking->start->format('l d F o, G:i'),
+                $futureBooking->end->format('l d F o, G:i'),
+            ]);
+    }
 }
