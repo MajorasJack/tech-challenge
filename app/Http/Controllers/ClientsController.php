@@ -11,13 +11,7 @@ class ClientsController extends Controller
 {
     public function index(): View
     {
-        $clients = Client::all();
-
-        foreach ($clients as $client) {
-            $client->append('bookings_count');
-        }
-
-        return view('clients.index', ['clients' => $clients]);
+        return view('clients.index', ['clients' => Client::with('bookings')->get()]);
     }
 
     public function create(): View

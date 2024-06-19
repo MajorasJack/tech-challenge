@@ -27,7 +27,7 @@
                     <td>{{ client.name }}</td>
                     <td>{{ client.email }}</td>
                     <td>{{ client.phone }}</td>
-                    <td>{{ client.bookings_count }}</td>
+                    <td>{{ client.bookings.length }}</td>
                     <td>
                         <a class="btn btn-primary btn-sm" :href="`/clients/${client.id}`">View</a>
                         <button class="btn btn-danger btn-sm" @click="deleteClient(client)">Delete</button>

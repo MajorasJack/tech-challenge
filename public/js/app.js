@@ -38559,7 +38559,7 @@ var render = function() {
             _vm._v(" "),
             _c("td", [_vm._v(_vm._s(client.phone))]),
             _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(client.bookings_count))]),
+            _c("td", [_vm._v(_vm._s(client.bookings.length))]),
             _vm._v(" "),
             _c("td", [
               _c(
