@@ -12,7 +12,8 @@ class BookingSeederTest extends TestCase
     {
         $this->assertDatabaseCount(Booking::class, 0);
 
-        $this->artisan('db:seed');
+        $this->artisan('db:seed', ['class' => 'ClientSeeder']);
+        $this->artisan('db:seed', ['class' => 'BookingSeeder']);
 
         $this->assertDatabaseCount(Booking::class, 1500);
     }

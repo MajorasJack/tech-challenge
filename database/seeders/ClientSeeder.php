@@ -1,13 +1,14 @@
 <?php
 
-use App\User;
+namespace Database\Seeders;
+
 use App\Client;
 use Illuminate\Database\Seeder;
 
 class ClientSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Run the database seeders.
      *
      * @return void
      */
