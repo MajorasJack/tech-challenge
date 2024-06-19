@@ -12,7 +12,7 @@ $factory->define(Journal::class, function (Faker $faker) {
     return [
         'date' => $faker->date(),
         'text' => $faker->paragraph(),
-        'client_id' => fn () => factory(Client::class)->create()->id,
-        'user_id' => fn () => factory(User::class)->create()->id,
+        'client_id' => factory(Client::class),
+        'user_id' => factory(User::class),
     ];
 });

@@ -15,6 +15,6 @@ $factory->define(Client::class, function (Faker $faker) {
         'address' => $faker->streetAddress,
         'city' => $faker->city,
         'postcode' => $faker->postcode,
-        'user_id' => fn () => factory(User::class)->create()->id,
+        'user_id' => factory(User::class),
     ];
 });
