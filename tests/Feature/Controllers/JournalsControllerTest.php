@@ -53,7 +53,7 @@ class JournalsControllerTest extends TestCase
                 'date' => $date,
                 'text' => $text,
             ])
-            ->assertOk()
+            ->assertCreated()
             ->assertJson(['url' => route('clients.show', $client)]);
 
         $this->assertDatabaseHas(Journal::class, [
@@ -68,8 +68,7 @@ class JournalsControllerTest extends TestCase
 
         $this->actingAs(factory(User::class)->create())
             ->delete(route('journals.destroy', [$journal->client, $journal]))
-            ->assertOk()
-            ->assertJson(['message' => 'Journal successfully deleted']);
+            ->assertNoContent();
 
         $this->assertDatabaseCount(Journal::class, 0);
     }

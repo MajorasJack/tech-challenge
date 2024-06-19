@@ -36,7 +36,7 @@ class ClientsControllerTest extends TestCase
                 'email' => $this->faker->safeEmail(),
                 'phone' => sprintf('+%s', $this->faker->randomNumber()),
             ])
-            ->assertValid()
+            ->assertCreated()
             ->assertSessionHasNoErrors();
     }
 
@@ -46,8 +46,7 @@ class ClientsControllerTest extends TestCase
 
         $this->actingAs(factory(User::class)->create())
             ->delete(route('clients.destroy', $client))
-            ->assertOk()
-            ->assertJson(['message' => sprintf('Client "%s" successfully deleted', $client->name)]);
+            ->assertNoContent();
 
         $this->assertDatabaseCount(Client::class, 0);
     }

@@ -2150,14 +2150,16 @@ __webpack_require__.r(__webpack_exports__);
     },
     deleteBooking: function deleteBooking(booking) {
       axios__WEBPACK_IMPORTED_MODULE_0___default.a["delete"]("/bookings/".concat(booking.id));
+      this.bookings.splice(this.bookings.indexOf(booking), 1);
     },
-    deleteJournal: function deleteJournal(booking) {
+    deleteJournal: function deleteJournal(journal) {
       var _this2 = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a["delete"]("/clients/".concat(this.client.id, "/journals/").concat(booking.id)).then(function (response) {
-        return _this2.message = response.data.message;
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a["delete"]("/clients/".concat(this.client.id, "/journals/").concat(journal.id)).then(function () {
+        return _this2.message = 'Journal deleted successfully';
+      }).then(function () {
+        return _this2.journals.splice(_this2.journals.indexOf(journal), 1);
       });
-      window.location.reload();
     },
     filterBookings: function filterBookings(filter) {
       var _this3 = this;
@@ -2235,10 +2237,10 @@ __webpack_require__.r(__webpack_exports__);
     deleteClient: function deleteClient(client) {
       var _this = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a["delete"]("/clients/".concat(client.id)).then(function (response) {
-        return _this.message = response.data.message;
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a["delete"]("/clients/".concat(client.id)).then(function () {
+        return _this.message = 'Client deleted successfully';
       });
-      window.location.reload();
+      this.clients.splice(this.clients.indexOf(client), 1);
     }
   }
 });
@@ -38382,13 +38384,7 @@ var render = function() {
                           "tbody",
                           _vm._l(_vm.bookings, function(booking) {
                             return _c("tr", { key: booking.id }, [
-                              _c("td", [
-                                _vm._v(
-                                  _vm._s(booking.start) +
-                                    " to " +
-                                    _vm._s(booking.end)
-                                )
-                              ]),
+                              _c("td", [_vm._v(_vm._s(booking.duration))]),
                               _vm._v(" "),
                               _c("td", [_vm._v(_vm._s(booking.notes))]),
                               _vm._v(" "),

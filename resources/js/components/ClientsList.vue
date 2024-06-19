@@ -54,8 +54,8 @@ export default {
 
     methods: {
         deleteClient(client) {
-            axios.delete(`/clients/${client.id}`).then((response) => this.message = response.data.message);
-            window.location.reload();
+            axios.delete(`/clients/${client.id}`).then(() => this.message = 'Client deleted successfully');
+            this.clients.splice(this.clients.indexOf(client), 1)
         }
     }
 }

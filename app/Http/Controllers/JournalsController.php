@@ -8,6 +8,7 @@ use App\Journal;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 
 class JournalsController extends Controller
 {
@@ -30,13 +31,13 @@ class JournalsController extends Controller
             'user_id' => auth()->user()->getAuthIdentifier(),
         ]);
 
-        return response()->json(['url' => route('clients.show', $client)]);
+        return response()->json(['url' => route('clients.show', $client)], Response::HTTP_CREATED);
     }
 
-    public function destroy(Client $client, Journal $journal): JsonResponse
+    public function destroy(Client $client, Journal $journal): Response
     {
         $journal->delete();
 
-        return response()->json(['message' => 'Journal successfully deleted']);
+        return response()->noContent();
     }
 }

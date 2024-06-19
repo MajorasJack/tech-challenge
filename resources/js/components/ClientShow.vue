@@ -79,7 +79,7 @@
                             </thead>
                             <tbody>
                                 <tr v-for="booking in bookings" :key="booking.id">
-                                    <td>{{ booking.start }} to {{ booking.end }}</td>
+                                    <td>{{ booking.duration }}</td>
                                     <td>{{ booking.notes }}</td>
                                     <td>
                                         <button class="btn btn-danger btn-sm" @click="deleteBooking(booking)">Delete</button>
@@ -163,12 +163,13 @@ export default {
 
         deleteBooking(booking) {
             axios.delete(`/bookings/${booking.id}`);
+            this.bookings.splice(this.bookings.indexOf(booking), 1)
         },
 
-        deleteJournal(booking) {
-            axios.delete(`/clients/${this.client.id}/journals/${booking.id}`)
-                .then((response) => this.message = response.data.message);
-            window.location.reload();
+        deleteJournal(journal) {
+            axios.delete(`/clients/${this.client.id}/journals/${journal.id}`)
+                .then(() => this.message = 'Journal deleted successfully')
+                .then(() => this.journals.splice(this.journals.indexOf(journal), 1));
         },
 
         filterBookings(filter) {

@@ -6,6 +6,7 @@ use App\Client;
 use App\Http\Requests\ClientRequest;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class ClientsController extends Controller
 {
@@ -24,15 +25,17 @@ class ClientsController extends Controller
         return view('clients.show', ['client' => $client]);
     }
 
-    public function store(ClientRequest $request)
+    public function store(ClientRequest $request): JsonResponse
     {
-        return Client::create($request->validated());
+        $client = Client::create($request->validated());
+
+        return response()->json($client, Response::HTTP_CREATED);
     }
 
-    public function destroy(Client $client): JsonResponse
+    public function destroy(Client $client): Response
     {
         $client->delete();
 
-        return response()->json(['message' => sprintf('Client "%s" successfully deleted', $client->name)]);
+        return response()->noContent();
     }
 }
