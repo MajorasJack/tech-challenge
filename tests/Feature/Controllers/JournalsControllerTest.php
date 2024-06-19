@@ -40,4 +40,25 @@ class JournalsControllerTest extends TestCase
                         ->toArray(),
             );
     }
+
+    public function testThatItCanCreateAJournalAsExpected()
+    {
+        $date = $this->faker->date();
+        $text = $this->faker->paragraph();
+
+        $client = factory(Client::class)->create();
+
+        $this->actingAs(factory(User::class)->create())
+            ->post(route('journals.store', $client), [
+                'date' => $date,
+                'text' => $text,
+            ])
+            ->assertOk()
+            ->assertJson(['url' => route('clients.show', $client)]);
+
+        $this->assertDatabaseHas(Journal::class, [
+            'date' => $date,
+            'text' => $text,
+        ]);
+    }
 }

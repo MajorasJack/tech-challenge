@@ -93,14 +93,7 @@
                     <div class="flow-root">
                         <h3 class="float-left mb-3">List of client journals</h3>
 
-                        <div class="float-right">
-                            <button
-                                class="btn btn-info text-white"
-                                type="button"
-                            >
-                                Create Journal
-                            </button>
-                        </div>
+                        <a :href="`/clients/${client.id}/journals/create`" class="float-right btn btn-primary">+ New Journal</a>
                     </div>
 
                     <template v-if="journals && journals.length > 0">
