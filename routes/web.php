@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\BookingsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,16 +22,23 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => 'auth', 'prefix' => 'clients'], function () {
-    Route::get('/', 'ClientsController@index')->name('clients.index');
-    Route::get('/create', 'ClientsController@create');
-    Route::post('/', 'ClientsController@store')->name('clients.store');
+    Route::resource('/', 'ClientsController', ['names' => 'clients'])
+        ->only([
+            'index',
+            'create',
+            'store',
+        ]);
+
     Route::get('/{client}', 'ClientsController@show')->name('clients.show');
     Route::delete('/{client}', 'ClientsController@destroy')->name('clients.destroy');
 
     Route::get('/{client}/bookings', 'BookingsController')->name('client.bookings');
 
-    Route::get('/{client}/journals', 'JournalsController@index')->name('journals.index');
-    Route::get('/{client}/journals/create', 'JournalsController@create');
-    Route::post('/{client}/journals', 'JournalsController@store')->name('journals.store');
-    Route::delete('/{client}/journals/{journal}', 'JournalsController@destroy')->name('journals.destroy');
+    Route::resource('/{client}/journals', 'JournalsController', ['names' => 'journals'])
+        ->only([
+            'index',
+            'create',
+            'store',
+            'destroy',
+        ]);
 });

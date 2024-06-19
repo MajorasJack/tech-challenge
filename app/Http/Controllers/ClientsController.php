@@ -4,14 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Client;
 use App\Http\Requests\ClientRequest;
-use App\Http\Requests\ClientShowRequest;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Builder;
-
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 
 class ClientsController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         $clients = Client::all();
 
@@ -22,12 +20,12 @@ class ClientsController extends Controller
         return view('clients.index', ['clients' => $clients]);
     }
 
-    public function create()
+    public function create(): View
     {
         return view('clients.create');
     }
 
-    public function show(Client $client)
+    public function show(Client $client): View
     {
         return view('clients.show', ['client' => $client]);
     }
@@ -37,7 +35,7 @@ class ClientsController extends Controller
         return Client::create($request->validated());
     }
 
-    public function destroy(Client $client)
+    public function destroy(Client $client): JsonResponse
     {
         $client->delete();
 
