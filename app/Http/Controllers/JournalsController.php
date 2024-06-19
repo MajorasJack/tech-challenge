@@ -32,4 +32,11 @@ class JournalsController extends Controller
 
         return response()->json(['url' => route('clients.show', $client)]);
     }
+
+    public function destroy(Client $client, Journal $journal): JsonResponse
+    {
+        $journal->delete();
+
+        return response()->json(['message' => 'Journal successfully deleted']);
+    }
 }

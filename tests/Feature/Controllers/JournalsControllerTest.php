@@ -61,4 +61,16 @@ class JournalsControllerTest extends TestCase
             'text' => $text,
         ]);
     }
+
+    public function testThatItCanDeleteAJournalAsExpected()
+    {
+        $journal = factory(Journal::class)->create();
+
+        $this->actingAs(factory(User::class)->create())
+            ->delete(route('journals.destroy', [$journal->client, $journal]))
+            ->assertOk()
+            ->assertJson(['message' => 'Journal successfully deleted']);
+
+        $this->assertDatabaseCount(Journal::class, 0);
+    }
 }

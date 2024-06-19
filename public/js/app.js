@@ -2111,6 +2111,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'ClientShow',
@@ -2119,7 +2126,8 @@ __webpack_require__.r(__webpack_exports__);
     return {
       currentTab: 'bookings',
       journals: [],
-      journalsLoaded: false
+      journalsLoaded: false,
+      message: ''
     };
   },
   mounted: function mounted() {
@@ -2138,7 +2146,12 @@ __webpack_require__.r(__webpack_exports__);
       axios__WEBPACK_IMPORTED_MODULE_0___default.a["delete"]("/bookings/".concat(booking.id));
     },
     deleteJournal: function deleteJournal(booking) {
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a["delete"]("/clients/".concat(this.client.id, "/journals/").concat(booking.id));
+      var _this2 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a["delete"]("/clients/".concat(this.client.id, "/journals/").concat(booking.id)).then(function (response) {
+        return _this2.message = response.data.message;
+      });
+      window.location.reload();
     },
     filterBookings: function filterBookings(filter) {
       window.location = "/clients/".concat(this.client.id, "?filter=").concat(filter);
@@ -38176,6 +38189,12 @@ var render = function() {
     _c("h1", { staticClass: "mb-6" }, [
       _vm._v("Clients -> " + _vm._s(_vm.client.name))
     ]),
+    _vm._v(" "),
+    _vm.message.length
+      ? _c("div", { staticClass: "alert alert-success" }, [
+          _vm._v("\n        " + _vm._s(_vm.message) + "\n    ")
+        ])
+      : _vm._e(),
     _vm._v(" "),
     _c("div", { staticClass: "flex" }, [
       _c("div", { staticClass: "w-1/3 mr-5" }, [

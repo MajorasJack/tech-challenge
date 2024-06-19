@@ -2,6 +2,13 @@
     <div>
         <h1 class="mb-6">Clients -> {{ client.name }}</h1>
 
+        <div
+            v-if="message.length"
+            class="alert alert-success"
+        >
+            {{ message }}
+        </div>
+
         <div class="flex">
             <div class="w-1/3 mr-5">
                 <div class="w-full bg-white rounded p-4">
@@ -135,6 +142,7 @@ export default {
             currentTab: 'bookings',
             journals: [],
             journalsLoaded: false,
+            message: '',
         }
     },
 
@@ -153,7 +161,9 @@ export default {
         },
 
         deleteJournal(booking) {
-            axios.delete(`/clients/${this.client.id}/journals/${booking.id}`);
+            axios.delete(`/clients/${this.client.id}/journals/${booking.id}`)
+                .then((response) => this.message = response.data.message);
+            window.location.reload();
         },
 
         filterBookings(filter) {
