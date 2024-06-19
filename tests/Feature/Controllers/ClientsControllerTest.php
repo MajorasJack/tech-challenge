@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Controllers;
 
-use App\Booking;
 use App\Client;
 use App\User;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -11,6 +10,29 @@ use Tests\TestCase;
 class ClientsControllerTest extends TestCase
 {
     use WithFaker;
+
+    public function testItWillOnlyReturnAUsersClients()
+    {
+        $user = factory(User::class)->create();
+
+        $client = factory(Client::class)->create(['user_id' => $user->id]);
+
+        $this->actingAs($user)
+            ->get(route('clients.show', $client))
+            ->assertOk()
+            ->assertSee($client->name);
+    }
+
+    public function testAUserCantViewAnotherClient()
+    {
+        $user = factory(User::class)->create();
+
+        $client = factory(Client::class)->create();
+
+        $this->actingAs($user)
+            ->get(route('clients.show', $client))
+            ->assertForbidden();
+    }
 
     public function testItWillThrowAnErrorWhenProvidingInvalidCreationData()
     {

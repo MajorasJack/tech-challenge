@@ -7,7 +7,6 @@ use App\Http\Requests\JournalStoreRequest;
 use App\Journal;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 
 class JournalsController extends Controller
