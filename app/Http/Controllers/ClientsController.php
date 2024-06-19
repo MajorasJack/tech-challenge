@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Client;
 use App\Http\Requests\ClientRequest;
+use App\Http\Requests\ClientShowRequest;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
 
 class ClientsController extends Controller
@@ -24,10 +27,15 @@ class ClientsController extends Controller
         return view('clients.create');
     }
 
-    public function show($client)
+    public function show(Client $client, ClientShowRequest $request)
     {
-        $client = Client::where('id', $client)
-            ->with('bookings')
+        $client = $client->with(['bookings' => function (HasMany $query) use ($request) {
+            match ($request->get('filter')) {
+                'past' => $query->where('start', '<=', now()),
+                'future' => $query->where('start', '>=', now()),
+                default => $query,
+            };
+        }])
             ->first();
 
         return view('clients.show', ['client' => $client]);

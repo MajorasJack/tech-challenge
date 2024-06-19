@@ -2066,6 +2066,28 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'ClientShow',
@@ -2081,6 +2103,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     deleteBooking: function deleteBooking(booking) {
       axios__WEBPACK_IMPORTED_MODULE_0___default.a["delete"]("/bookings/".concat(booking.id));
+    },
+    filterBookings: function filterBookings(filter) {
+      window.location = "/clients/".concat(this.client.id, "?filter=").concat(filter);
     }
   }
 });
@@ -38149,8 +38174,82 @@ var render = function() {
               "div",
               { staticClass: "bg-white rounded p-4" },
               [
-                _c("h3", { staticClass: "mb-3" }, [
-                  _vm._v("List of client bookings")
+                _c("div", { staticClass: "flow-root" }, [
+                  _c("h3", { staticClass: "float-left mb-3" }, [
+                    _vm._v("List of client bookings")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "float-right" }, [
+                    _c("div", { staticClass: "dropdown" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass:
+                            "btn btn-info text-white dropdown-toggle",
+                          attrs: {
+                            type: "button",
+                            id: "bookingsMenuButton",
+                            "data-toggle": "dropdown",
+                            "aria-haspopup": "true",
+                            "aria-expanded": "false"
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                All Bookings\n                            "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "dropdown-menu",
+                          attrs: { "aria-labelledby": "bookingsMenuButton" }
+                        },
+                        [
+                          _c(
+                            "a",
+                            {
+                              staticClass: "dropdown-item",
+                              on: {
+                                click: function($event) {
+                                  return _vm.filterBookings("all")
+                                }
+                              }
+                            },
+                            [_vm._v("All bookings")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "a",
+                            {
+                              staticClass: "dropdown-item",
+                              on: {
+                                click: function($event) {
+                                  return _vm.filterBookings("past")
+                                }
+                              }
+                            },
+                            [_vm._v("Past bookings only")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "a",
+                            {
+                              staticClass: "dropdown-item",
+                              on: {
+                                click: function($event) {
+                                  return _vm.filterBookings("future")
+                                }
+                              }
+                            },
+                            [_vm._v("Future bookings only")]
+                          )
+                        ]
+                      )
+                    ])
+                  ])
                 ]),
                 _vm._v(" "),
                 _vm.client.bookings && _vm.client.bookings.length > 0

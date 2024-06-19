@@ -37,7 +37,29 @@
 
                 <!-- Bookings -->
                 <div class="bg-white rounded p-4" v-if="currentTab == 'bookings'">
-                    <h3 class="mb-3">List of client bookings</h3>
+                    <div class="flow-root">
+                        <h3 class="float-left mb-3">List of client bookings</h3>
+
+                        <div class="float-right">
+                            <div class="dropdown">
+                                <button
+                                    class="btn btn-info text-white dropdown-toggle"
+                                    type="button"
+                                    id="bookingsMenuButton"
+                                    data-toggle="dropdown"
+                                    aria-haspopup="true"
+                                    aria-expanded="false"
+                                >
+                                    All Bookings
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="bookingsMenuButton">
+                                    <a class="dropdown-item" @click="filterBookings('all')">All bookings</a>
+                                    <a class="dropdown-item" @click="filterBookings('past')">Past bookings only</a>
+                                    <a class="dropdown-item" @click="filterBookings('future')">Future bookings only</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <template v-if="client.bookings && client.bookings.length > 0">
                         <table>
@@ -98,6 +120,10 @@ export default {
 
         deleteBooking(booking) {
             axios.delete(`/bookings/${booking.id}`);
+        },
+
+        filterBookings(filter) {
+            window.location = `/clients/${this.client.id}?filter=${filter}`;
         }
     }
 }
