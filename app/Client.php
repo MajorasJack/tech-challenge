@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Client extends Model
 {
+    protected $guarded = ['id', 'created_at', 'updated_at'];
+
     protected $fillable = [
         'name',
         'email',
@@ -15,13 +17,12 @@ class Client extends Model
         'address',
         'city',
         'postcode',
+        'user_id'
     ];
 
-    protected $appends = [
-        'url',
-    ];
+    protected $appends = ['url'];
 
-    public function bookings()
+    public function bookings(): HasMany
     {
         return $this->hasMany(Booking::class)->orderBy('start');
     }
@@ -36,13 +37,13 @@ class Client extends Model
         return $this->hasMany(Journal::class);
     }
 
-    public function getBookingsCountAttribute()
+    public function getBookingsCountAttribute(): int
     {
-        return $this->bookings->count();
+        return $this->bookings()->count();
     }
 
-    public function getUrlAttribute()
+    public function getUrlAttribute(): string
     {
-        return "/clients/" . $this->id;
+        return sprintf('/clients/%d', $this->id);
     }
 }
