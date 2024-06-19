@@ -201,4 +201,16 @@ class ClientsControllerTest extends TestCase
                 $currentBooking->end->format('l d F o, G:i'),
             ]);
     }
+
+    public function testThatItCanDeleteAClientAsExpected()
+    {
+        $client = factory(Client::class)->create();
+
+        $this->actingAs(factory(User::class)->create())
+            ->delete(route('clients.destroy', $client))
+            ->assertOk()
+            ->assertJson(['message' => sprintf('Client "%s" successfully deleted', $client->name)]);
+
+        $this->assertDatabaseCount(Client::class, 0);
+    }
 }
