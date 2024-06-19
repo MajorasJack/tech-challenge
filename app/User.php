@@ -42,4 +42,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Client::class);
     }
+
+    public function journals(): HasMany
+    {
+        return $this->hasMany(Journal::class);
+    }
 }

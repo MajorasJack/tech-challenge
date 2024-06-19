@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Client extends Model
 {
@@ -28,6 +29,11 @@ class Client extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function journals(): HasMany
+    {
+        return $this->hasMany(Journal::class);
     }
 
     public function getBookingsCountAttribute()
