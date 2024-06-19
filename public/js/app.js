@@ -2088,14 +2088,54 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'ClientShow',
   props: ['client'],
   data: function data() {
     return {
-      currentTab: 'bookings'
+      currentTab: 'bookings',
+      journals: [],
+      journalsLoaded: false
     };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/clients/".concat(this.client.id, "/journals")).then(function (response) {
+      return _this.journals = response.data;
+    });
+    this.journalsLoaded = true;
   },
   methods: {
     switchTab: function switchTab(newTab) {
@@ -2103,6 +2143,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     deleteBooking: function deleteBooking(booking) {
       axios__WEBPACK_IMPORTED_MODULE_0___default.a["delete"]("/bookings/".concat(booking.id));
+    },
+    deleteJournal: function deleteJournal(booking) {
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a["delete"]("/clients/".concat(this.client.id, "/journals/").concat(booking.id));
     },
     filterBookings: function filterBookings(filter) {
       window.location = "/clients/".concat(this.client.id, "?filter=").concat(filter);
@@ -38302,19 +38345,91 @@ var render = function() {
           : _vm._e(),
         _vm._v(" "),
         _vm.currentTab == "journals"
-          ? _c("div", { staticClass: "bg-white rounded p-4" }, [
-              _c("h3", { staticClass: "mb-3" }, [
-                _vm._v("List of client journals")
-              ]),
-              _vm._v(" "),
-              _c("p", [_vm._v("(BONUS) TODO: implement this feature")])
-            ])
+          ? _c(
+              "div",
+              { staticClass: "bg-white rounded p-4" },
+              [
+                _vm._m(1),
+                _vm._v(" "),
+                _vm.journals && _vm.journals.length > 0
+                  ? [
+                      _c("table", [
+                        _vm._m(2),
+                        _vm._v(" "),
+                        _c(
+                          "tbody",
+                          _vm._l(_vm.journals, function(journal) {
+                            return _c("tr", { key: journal.id }, [
+                              _c("td", [_vm._v(_vm._s(journal.date))]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(journal.text))]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn btn-danger btn-sm",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.deleteJournal(journal)
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("Delete")]
+                                )
+                              ])
+                            ])
+                          }),
+                          0
+                        )
+                      ])
+                    ]
+                  : _vm._e()
+              ],
+              2
+            )
           : _vm._e()
       ])
     ])
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Time")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Notes")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Actions")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "flow-root" }, [
+      _c("h3", { staticClass: "float-left mb-3" }, [
+        _vm._v("List of client journals")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "float-right" }, [
+        _c(
+          "button",
+          { staticClass: "btn btn-info text-white", attrs: { type: "button" } },
+          [
+            _vm._v(
+              "\n                            Create Journal\n                        "
+            )
+          ]
+        )
+      ])
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
