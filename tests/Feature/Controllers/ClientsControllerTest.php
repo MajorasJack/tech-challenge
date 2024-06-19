@@ -98,4 +98,107 @@ class ClientsControllerTest extends TestCase
                 $futureBooking->end->format('l d F o, G:i'),
             ]);
     }
+
+    public function testThatItWillDisplayAllBookingsWhenNothingIsFiltered()
+    {
+
+        $client = factory(Client::class)->create();
+
+        $oldBooking = factory(Booking::class)->create([
+            'client_id' => $client->id,
+            'start' => now()->subDays($this->faker->numberBetween(1, 100)),
+        ]);
+
+        $currentBooking = factory(Booking::class)->create([
+            'client_id' => $client->id,
+            'start' => now(),
+        ]);
+
+        $futureBooking = factory(Booking::class)->create([
+            'client_id' => $client->id,
+            'start' => now()->addDays($this->faker->numberBetween(1, 100)),
+        ]);
+
+        $this->actingAs(factory(User::class)->create())
+            ->get(route('clients.show', $client))
+            ->assertOk()
+            ->assertSee([
+                $futureBooking->start->format('l d F o, G:i'),
+                $futureBooking->end->format('l d F o, G:i'),
+                $oldBooking->start->format('l d F o, G:i'),
+                $oldBooking->end->format('l d F o, G:i'),
+                $currentBooking->start->format('l d F o, G:i'),
+                $currentBooking->end->format('l d F o, G:i'),
+            ]);
+    }
+
+    public function testThatItWillOnlyDisplayPastBookingsWhenFiltering()
+    {
+
+        $client = factory(Client::class)->create();
+
+        $oldBooking = factory(Booking::class)->create([
+            'client_id' => $client->id,
+            'start' => now()->subDays($this->faker->numberBetween(1, 100)),
+        ]);
+
+        $currentBooking = factory(Booking::class)->create([
+            'client_id' => $client->id,
+            'start' => now(),
+        ]);
+
+        $futureBooking = factory(Booking::class)->create([
+            'client_id' => $client->id,
+            'start' => now()->addDays($this->faker->numberBetween(1, 100)),
+        ]);
+
+        $this->actingAs(factory(User::class)->create())
+            ->get(route('clients.show', ['client' => $client, 'filter' => 'past']))
+            ->assertOk()
+            ->assertSee([
+                $oldBooking->start->format('l d F o, G:i'),
+                $oldBooking->end->format('l d F o, G:i'),
+            ])
+            ->assertDontSee([
+                $currentBooking->start->format('l d F o, G:i'),
+                $currentBooking->end->format('l d F o, G:i'),
+                $futureBooking->start->format('l d F o, G:i'),
+                $futureBooking->end->format('l d F o, G:i'),
+            ]);
+    }
+
+    public function testThatItWillOnlyDisplayFutureBookingsWhenFiltering()
+    {
+
+        $client = factory(Client::class)->create();
+
+        $oldBooking = factory(Booking::class)->create([
+            'client_id' => $client->id,
+            'start' => now()->subDays($this->faker->numberBetween(1, 100)),
+        ]);
+
+        $currentBooking = factory(Booking::class)->create([
+            'client_id' => $client->id,
+            'start' => now(),
+        ]);
+
+        $futureBooking = factory(Booking::class)->create([
+            'client_id' => $client->id,
+            'start' => now()->addDays($this->faker->numberBetween(1, 100)),
+        ]);
+
+        $this->actingAs(factory(User::class)->create())
+            ->get(route('clients.show', ['client' => $client, 'filter' => 'future']))
+            ->assertOk()
+            ->assertSee([
+                $futureBooking->start->format('l d F o, G:i'),
+                $futureBooking->end->format('l d F o, G:i'),
+            ])
+            ->assertDontSee([
+                $oldBooking->start->format('l d F o, G:i'),
+                $oldBooking->end->format('l d F o, G:i'),
+                $currentBooking->start->format('l d F o, G:i'),
+                $currentBooking->end->format('l d F o, G:i'),
+            ]);
+    }
 }

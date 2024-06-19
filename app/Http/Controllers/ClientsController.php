@@ -29,8 +29,8 @@ class ClientsController extends Controller
     {
         $client = $client->with(['bookings' => function (HasMany $query) use ($request) {
             match ($request->get('filter')) {
-                'past' => $query->where('start', '<=', now()),
-                'future' => $query->where('start', '>=', now()),
+                'past' => $query->where('start', '<', now()),
+                'future' => $query->where('start', '>', now()),
                 default => $query,
             };
         }])
