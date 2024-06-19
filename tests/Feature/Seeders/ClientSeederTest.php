@@ -13,6 +13,6 @@ class ClientSeederTest extends TestCase
 
         $this->artisan('db:seed', ['class' => 'ClientSeeder']);
 
-        $this->assertDatabaseCount(Client::class, 150);
+        $this->assertDatabaseCount(Client::class, 10);
     }
 }

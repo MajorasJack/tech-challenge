@@ -12,6 +12,26 @@ class BookingsControllerTest extends TestCase
 {
     use WithFaker;
 
+    public function testThatItWillLoadTheClientBookingsAsExpected()
+    {
+        $client = factory(Client::class)->create();
+
+        $booking = factory(Booking::class)->create(['client_id' => $client->id]);
+
+        $this->actingAs(factory(User::class)->create())
+            ->get(route('client.bookings', $client))
+            ->assertOk()
+            ->assertJson([
+                [
+                    'id' => $booking->id,
+                    'notes' => $booking->notes,
+                    'client_id' => $booking->client_id,
+                    'start' => $booking->start->format('l d F o, G:i'),
+                    'end' => $booking->end->format('l d F o, G:i'),
+                ]
+            ]);
+    }
+
     public function testItWillDisplayTheClientBookingDateInTheCorrectFormat()
     {
         $client = factory(Client::class)->create();

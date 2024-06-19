@@ -15,14 +15,10 @@ class BookingSeeder extends Seeder
      */
     public function run()
     {
-        $clients = Client::all();
-
-        foreach ($clients as $client) {
-            $numberOfBookings = 10;
-
-            factory(Booking::class, $numberOfBookings)->create([
+        Client::all()->each(function (Client $client) {
+            factory(Booking::class, 10)->create([
                 'client_id' => $client->id,
             ]);
-        }
+        });
     }
 }

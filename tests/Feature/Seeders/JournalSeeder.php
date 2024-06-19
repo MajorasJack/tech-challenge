@@ -13,8 +13,10 @@ class JournalSeeder extends TestCase
     {
         $this->assertDatabaseCount(Journal::class, 0);
 
-        $this->artisan('db:seed');
+        factory(Client::class)->create();
 
-        $this->assertDatabaseCount(Journal::class, 1500);
+        $this->artisan('db:seed', ['class' => 'JournalSeeder']);
+
+        $this->assertDatabaseCount(Journal::class, 10);
     }
 }
